@@ -5,7 +5,7 @@ const productRouter = require("./routes/product");
 const userRouter = require("./routes/user");
 const DB =
   "mongodb+srv://karthik:karthik123@cluster0.vie2q.mongodb.net/smart-basket?retryWrites=true&w=majority";
-const PORT = 8080;
+const PORT = process.env.PORT | 8080;
 const app = express();
 
 app.use(express.json());
