@@ -126,31 +126,31 @@ userRouter.get("/recentpurchases", async (req, res) => {
   }
 });
 
-userRouter.post("/addProduct", async (req, res) => {
-  try {
-    const { name, description, images, price, category, barcode, shop } =
-      req.body;
+// userRouter.post("/addProduct", async (req, res) => {
+//   try {
+//     const { name, description, images, price, category, barcode, shop } =
+//       req.body;
 
-    const existingProduct = await Product.findOne({ name });
-    if (existingProduct) {
-      return res.status(400).json({ msg: "Product already exists!" });
-    }
+//     const existingProduct = await Product.findOne({ name });
+//     if (existingProduct) {
+//       return res.status(400).json({ msg: "Product already exists!" });
+//     }
 
-    let product = new Product({
-      name,
-      description,
-      images,
-      price,
-      category,
-      barcode,
-      shop,
-    });
-    product = await product.save();
-    res.status(200).json(product);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
+//     let product = new Product({
+//       name,
+//       description,
+//       images,
+//       price,
+//       category,
+//       barcode,
+//       shop,
+//     });
+//     product = await product.save();
+//     res.status(200).json(product);
+//   } catch (e) {
+//     res.status(500).json({ error: e.message });
+//   }
+// });
 
 userRouter.delete("/removeProduct", async (req, res) => {
   try {
