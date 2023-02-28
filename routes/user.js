@@ -184,11 +184,12 @@ userRouter.post("/submitform", async (req, res) => {
 
     // Find the shop in MongoDB and update the quantity of the specified product
     const shop = await Shop.findOneAndUpdate(
-      { "product.name": productName },
-      { $set: { "product.$.quantity": quantity } },
+      { "products.name": productName },
+      { $set: { "products.$.quantity": quantity } },
       { new: true }
     );
-
+    console.log(shop);
+    console.log(productName);
     res.status(200).json({
       msg: `Quantity for ${productName} in ${shop.name} has been updated to ${quantity}`,
     });

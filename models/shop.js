@@ -19,7 +19,7 @@ const shopSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  product: [
+  products: [
     {
       name: {
         type: String,
