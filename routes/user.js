@@ -230,16 +230,25 @@ userRouter.post("/addproduct", async (req, res) => {
 });
 
 userRouter.delete("/products/delete", async (req, res) => {
-  const productName = req.body.name;
-  console.log(productName);
   try {
-    const product = await Shop.findOneAndDelete({ name: productName });
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+    const { productName } = req.body;
+    const shop = await Shop.findOneAndUpdate(
+      { name: "Self-Out" },
+      {
+        $pull: {
+          products: {
+            name: productName,
+          },
+        },
+      },
+      { new: true }
+    );
+    if (!shop) {
+      return res.status(404).json({ error: "Shop not found" });
     }
     res.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    console.error(e);
     res.status(500).json({ error: "Error deleting product" });
   }
 });
