@@ -1,6 +1,11 @@
 const express = require("express");
 const productRouter = express.Router();
 const Shop = require("../models/shop");
+const http = require("http");
+const url = require("url");
+const qs = require("querystring");
+const mongoose = require("mongoose");
+const Shop = require("./models/shop");
 
 productRouter.get("/products", async (req, res) => {
   try {
