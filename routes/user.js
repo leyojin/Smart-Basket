@@ -243,19 +243,5 @@ userRouter.delete("/products/:name", async (req, res) => {
     res.status(500).json({ error: "Error deleting product" });
   }
 });
-userRouter.delete("/products/:name", async (req, res) => {
-  const productName = req.params.name;
-  console.log(productName);
-  try {
-    const product = await Product.findOneAndDelete({ name: productName });
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-    res.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error deleting product" });
-  }
-});
 
 module.exports = userRouter;
