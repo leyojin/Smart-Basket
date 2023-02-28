@@ -233,7 +233,7 @@ userRouter.delete("/products/delete", async (req, res) => {
   const productName = req.body.name;
   console.log(productName);
   try {
-    const product = await Product.findOneAndDelete({ name: productName });
+    const product = await Shop.findOneAndDelete({ name: productName });
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
