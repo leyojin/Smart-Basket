@@ -229,8 +229,8 @@ userRouter.post("/addproduct", async (req, res) => {
   }
 });
 
-userRouter.delete("/products/:name", async (req, res) => {
-  const productName = req.params.name;
+userRouter.delete("/products/delete", async (req, res) => {
+  const productName = req.body.name;
   console.log(productName);
   try {
     const product = await Product.findOneAndDelete({ name: productName });
