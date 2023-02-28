@@ -46,7 +46,7 @@ const shopSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      shop: {
+      quantity: {
         type: String,
         required: true,
       },
