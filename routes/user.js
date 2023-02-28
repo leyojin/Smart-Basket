@@ -152,21 +152,21 @@ userRouter.get("/recentpurchases", async (req, res) => {
 //   }
 // });
 
-userRouter.delete("/removeProduct", async (req, res) => {
-  try {
-    let user = await User.findById(req.user);
-    let shop = await Shop.findById(req.params.id);
-    for (let i = 0; i < user.favourites.length; i++) {
-      if (user.favourites[i].name == shop.name) {
-        user.favourites.splice(i, 1);
-      }
-    }
-    user = await user.save();
-    res.status(200).json(user);
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
+// userRouter.delete("/removeProduct", async (req, res) => {
+//   try {
+//     let user = await User.findById(req.user);
+//     let shop = await Shop.findById(req.params.id);
+//     for (let i = 0; i < user.favourites.length; i++) {
+//       if (user.favourites[i].name == shop.name) {
+//         user.favourites.splice(i, 1);
+//       }
+//     }
+//     user = await user.save();
+//     res.status(200).json(user);
+//   } catch (e) {
+//     res.status(500).json({ error: e.message });
+//   }
+// });
 
 // userRouter.get("/favourites",  async (req, res) => {
 //   try {
@@ -226,6 +226,20 @@ userRouter.post("/addproduct", async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Error adding product" });
+  }
+});
+
+app.delete("/products/:name", async (req, res) => {
+  const productName = req.params.name;
+  try {
+    const product = await Product.findOneAndDelete({ name: productName });
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error deleting product" });
   }
 });
 
