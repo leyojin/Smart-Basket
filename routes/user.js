@@ -177,4 +177,27 @@ userRouter.delete("/removeProduct", async (req, res) => {
 //   }
 // });
 
+userRouter.post("/submit-form", async (req, res) => {
+  try {
+    const productName = req.body.dropdownMenu;
+    const quantity = req.body.textField;
+
+    // Find the shop in MongoDB and update the quantity of the specified product
+    const shop = await Shop.findOneAndUpdate(
+      { "product.name": productName },
+      { $set: { "product.$.quantity": quantity } },
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({
+        msg: `Quantity for ${productName} in ${shop.name} has been updated to ${quantity}`,
+      });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Error updating quantity" });
+  }
+});
+
 module.exports = userRouter;
