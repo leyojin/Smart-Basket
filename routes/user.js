@@ -199,4 +199,33 @@ userRouter.post("/submitform", async (req, res) => {
   }
 });
 
+userRouter.post("/addproduct", async (req, res) => {
+  try {
+    const { name, description, images, price, category, barcode, quantity } =
+      req.body;
+    const shop = await Shop.findOneAndUpdate(
+      { name: "Self-Out" }, // replace "My Shop" with the actual name of your shop
+      {
+        $push: {
+          products: {
+            name,
+            description,
+            images,
+            price,
+            category,
+            barcode,
+            quantity,
+          },
+        },
+      },
+      { new: true }
+    );
+    console.log(shop);
+    res.status(200).send("Product added successfully");
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Error adding product" });
+  }
+});
+
 module.exports = userRouter;
