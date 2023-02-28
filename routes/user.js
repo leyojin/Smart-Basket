@@ -37,43 +37,43 @@ const Product = require("../models/product");
 //   }
 // });
 
-userRouter.post("/addQuantity/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const product = await Product.findById(id);
-    let user = await User.findById(req.user);
-    let findProduct = user.cart.find((item) =>
-      item.product._id.equals(product._id)
-    );
-    findProduct.quantity += 1;
-    user = await user.save();
-    res.json({ msg: "Quantity Updated" }).status(200);
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
-});
+// userRouter.post("/addQuantity/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const product = await Product.findById(id);
+//     let user = await User.findById(req.user);
+//     let findProduct = user.cart.find((item) =>
+//       item.product._id.equals(product._id)
+//     );
+//     findProduct.quantity += 1;
+//     user = await user.save();
+//     res.json({ msg: "Quantity Updated" }).status(200);
+//   } catch (e) {
+//     res.status(400).json({ error: e.message });
+//   }
+// });
 
-userRouter.delete("/removeQuantity/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const product = await Product.findById(id);
-    let user = await User.findById(req.user);
+// userRouter.delete("/removeQuantity/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const product = await Product.findById(id);
+//     let user = await User.findById(req.user);
 
-    for (let i = 0; i < user.cart.length; i++) {
-      if (user.cart[i].product._id.equals(product._id)) {
-        if (user.cart[i].quantity == 1) {
-          user.cart.splice(i, 1);
-        } else {
-          user.cart[i].quantity -= 1;
-        }
-      }
-    }
-    user = await user.save();
-    res.status(200).json({ msg: "Item Removed" });
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
-});
+//     for (let i = 0; i < user.cart.length; i++) {
+//       if (user.cart[i].product._id.equals(product._id)) {
+//         if (user.cart[i].quantity == 1) {
+//           user.cart.splice(i, 1);
+//         } else {
+//           user.cart[i].quantity -= 1;
+//         }
+//       }
+//     }
+//     user = await user.save();
+//     res.status(200).json({ msg: "Item Removed" });
+//   } catch (e) {
+//     res.status(400).json({ error: e.message });
+//   }
+// });
 
 // userRouter.get("/emptyCart",  async (req, res) => {
 //   try {
@@ -231,6 +231,21 @@ userRouter.post("/addproduct", async (req, res) => {
 
 userRouter.delete("/products/:name", async (req, res) => {
   const productName = req.params.name;
+  console.log(productName);
+  try {
+    const product = await Product.findOneAndDelete({ name: productName });
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error deleting product" });
+  }
+});
+userRouter.delete("/products/:name", async (req, res) => {
+  const productName = req.params.name;
+  console.log(productName);
   try {
     const product = await Product.findOneAndDelete({ name: productName });
     if (!product) {
